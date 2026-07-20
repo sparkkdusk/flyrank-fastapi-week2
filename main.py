@@ -1,7 +1,11 @@
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
-app = FastAPI()
+app = FastAPI(
+    title="Task API",
+    description="A simple CRUD API built with FastAPI for FlyRank Backend AI Engineering Internship",
+    version="1.0"
+)
 
 class TaskCreate(BaseModel):
     title: str
@@ -42,12 +46,18 @@ def health():
     }
 
 
-@app.get("/tasks")
+@app.get(
+    "/tasks",
+    description="Get all tasks"
+)
 def get_tasks():
     return tasks
 
 
-@app.get("/tasks/{task_id}")
+@app.get(
+    "/tasks/{task_id}",
+    description="Get a single task by ID"
+)
 def get_task(task_id: int):
 
     for task in tasks:
@@ -61,8 +71,11 @@ def get_task(task_id: int):
 
 
 
-
-@app.post("/tasks", status_code=201)
+@app.post(
+    "/tasks",
+    status_code=201,
+    description="Create a new task"
+)
 def create_task(task: TaskCreate):
 
     if not task.title.strip():
@@ -85,7 +98,10 @@ def create_task(task: TaskCreate):
 
 
 
-@app.put("/tasks/{task_id}")
+@app.put(
+    "/tasks/{task_id}",
+    description="Update an existing task"
+)
 def update_task(task_id: int, updated_task: TaskCreate):
 
     for task in tasks:
@@ -101,7 +117,11 @@ def update_task(task_id: int, updated_task: TaskCreate):
     )
 
 
-@app.delete("/tasks/{task_id}", status_code=204)
+@app.delete(
+    "/tasks/{task_id}",
+    status_code=204,
+    description="Delete a task"
+)
 def delete_task(task_id: int):
 
     for task in tasks:
